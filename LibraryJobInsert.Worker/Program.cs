@@ -1,8 +1,5 @@
 using LibraryJobInsert.Application.Extensions;
-using LibraryJobInsert.Domain.Interfaces;
-using LibraryJobInsert.Infrastructure.Data;
 using LibraryJobInsert.Infrastructure.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +26,7 @@ namespace LibraryJobInsert.Worker
 
                     services.AddApplicationServicesExtensions(configForMain);
 
-                    services.AddInfrastructureServicesExtensios(configForMain);  
+                    services.AddInfrastructureServicesExtensios(configForMain);
 
                     services.AddHostedService<Worker>();
 

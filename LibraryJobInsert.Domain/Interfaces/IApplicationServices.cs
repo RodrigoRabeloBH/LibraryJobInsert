@@ -6,8 +6,8 @@ namespace LibraryJobInsert.Domain.Interfaces
 {
     public interface IApplicationServices
     {
-        Task<IEnumerable<Message>> GET(string enpoint);
+        Task<IEnumerable<Message>> GET(string queueName);
         Task<IEnumerable<Message>> InsertCustomer(IEnumerable<Message> messages);
-        Task POST(IEnumerable<Message> messages, string endpoint);
+        Task POST(IEnumerable<Message> messages);
     }
 }

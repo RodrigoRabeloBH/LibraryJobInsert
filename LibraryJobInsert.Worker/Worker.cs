@@ -24,13 +24,21 @@ namespace LibraryJobInsert.Worker
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                var messages = await _services.GET("IntegracaoClientes");
-
-                if (messages != null)
+                try
                 {
-                    var executeMessages = await _services.InsertCustomer(messages);
+                    var messages = await _services.GET("IntegracaoClientes");
 
-                    await _services.POST(executeMessages, "ConfirmDeliveryMessage");
+                    if (messages != null)
+                    {
+                        var executeMessages = await _services.InsertCustomer(messages);
+
+                        await _services.POST(executeMessages);
+                    }
+                }
+                catch (Exception exc)
+                {
+
+                    _logger.LogInformation(exc.Message);
                 }
 
                 await Task.Delay(1000, stoppingToken);

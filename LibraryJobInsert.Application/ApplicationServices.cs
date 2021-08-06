@@ -27,16 +27,16 @@ namespace LibraryJobInsert.Application
             url = _configuration["ApiUrl"];
         }
 
-        public async Task<IEnumerable<Message>> GET(string enpoint)
+        public async Task<IEnumerable<Message>> GET(string queueName)
         {
             IEnumerable<Message> messages = null;
             try
             {
                 using (var http = new HttpClient())
                 {
-                    url = url + enpoint;
+                    http.DefaultRequestHeaders.Clear();          
 
-                    var response = await http.GetAsync(url);
+                    var response = await http.GetAsync(url + queueName);
 
                     var result = JsonConvert.DeserializeObject<JToken>(await response.Content.ReadAsStringAsync());
 
@@ -53,15 +53,17 @@ namespace LibraryJobInsert.Application
             return messages;
         }
 
-        public async Task POST(IEnumerable<Message> messages, string endpoint)
+        public async Task POST(IEnumerable<Message> messages)
         {
             try
             {
                 using (var http = new HttpClient())
                 {
+                    http.DefaultRequestHeaders.Clear();
+
                     HttpContent content = new StringContent(JsonConvert.SerializeObject(messages), Encoding.UTF8, "application/json");
 
-                    var response = await http.PostAsync(url + endpoint, content);
+                    var response = await http.PostAsync(url, content);
                 }
             }
             catch (Exception ex)
@@ -95,6 +97,6 @@ namespace LibraryJobInsert.Application
                 _logger.LogError("Error: " + ex.Message);
             }
             return executedMessages;
-        }
+        }        
     }
 }
